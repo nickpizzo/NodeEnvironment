@@ -1,0 +1,17 @@
+'use strict';
+
+// simple express server
+var express = require('express');
+var app = express();
+var router = express.Router();
+
+app.use(express.static('public'));
+app.get('/', function(req, res) {
+    res.sendFile('./public/index.html');
+});
+
+app.get('/test', function(req, res) {
+    res.sendFile('./public/index2.html');
+});
+
+app.listen(5000);
