@@ -6,15 +6,10 @@ var reload = browserSync.reload;
 var nodemon = require('gulp-nodemon');
 var sass = require('gulp-sass');
 
-gulp.task('default', ['html', 'browser-sync']);
+gulp.task('default', ['browser-sync']);
 
-/////////////// HTML ///////////////
+/////////////// CSS ///////////////
 
-gulp.task('html', function () {
-	gulp.src('./*.html')
-		.pipe(gulp.dest('public/'))
-		.pipe(reload({stream: true}));
-});
 
 /////////////// Serve & Watch ///////////////
 
@@ -25,7 +20,7 @@ gulp.task('browser-sync', ['nodemon'], function () {
         browser: "google chrome",
         port: 7000,
 	});
-	gulp.watch('./*.html', ['html']);
+	gulp.watch('views/*.pug', function () {browserSync.reload()});
 });
 
 gulp.task('nodemon', function (cb) {
