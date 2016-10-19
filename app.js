@@ -7,12 +7,12 @@ app.get('/', function (req, res) {
   res.render('index')
 })
 
-app.get('/test', function (req, res) {
-  res.render('test')
+app.get('/link1', function (req, res) {
+  res.render('link1')
 })
 
-app.get('/test2', function (req, res) {
-  res.render('testing')
+app.get('/link2', function (req, res) {
+  res.render('link2')
 })
 
 app.listen(5000, function () {

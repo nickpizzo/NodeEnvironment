@@ -1,0 +1,11 @@
+@import './base/reset';
+@import './partials/navbar';
+
+body {
+  background-color: lightgrey;
+}
+
+.test {
+  padding-top: 25px;
+  font-size: 1.5em;
+}

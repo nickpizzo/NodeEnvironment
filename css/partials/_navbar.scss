@@ -1,0 +1,21 @@
+header {
+  height: 75px;
+  border-bottom: 1px solid black;
+  font-size: 1.5em;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
+  margin: 0 auto;
+  ul {
+    display: flex;
+    height: 75px;
+    align-items: center;
+    li {
+      padding-left: 10px;
+    }
+  }
+}
