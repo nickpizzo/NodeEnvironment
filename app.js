@@ -4,7 +4,9 @@ app.set('view engine', 'pug')
 app.use(express.static('public'))
 
 app.get('/', function (req, res) {
-  res.render('index')
+  res.render('index', {
+    scrpits: ['main.js']
+  })
 })
 
 app.get('/link1', function (req, res) {
