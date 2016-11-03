@@ -1,6 +1,7 @@
 'use strict';
 
 import gulp from 'gulp';
+import babel from 'gulp-babel';
 import browserSync from 'browser-sync';
 import nodemon from 'gulp-nodemon';
 import sass from 'gulp-sass';
@@ -8,53 +9,61 @@ import sourcemaps from 'gulp-sourcemaps';
 import uglify from 'gulp-uglify';
 import concat from 'gulp-concat';
 
-var reload = browserSync.reload;
+const reload = browserSync.reload;
+const paths = {
+  allSrcJs: 'js/**/*.js',
+  allSrcCss: 'css/**/*.{css,scss}',
+  jsDistDir: 'public/js',
+  cssDistDir: 'public/css',
+	gulpFile: 'gulpfile.babel.js',
+	appEntryPoint: 'app.js',
+};
 
-gulp.task('default', ['browser-sync', 'sass', 'scripts', 'watch']);
+//// JS ////
 
-/////////////// CSS ///////////////
-
-gulp.task('sass', function () {
-	gulp.src('css/*.scss')
-	.pipe(sass())
-	.pipe(gulp.dest('public/css'))
-})
-
-/////////////// JS ///////////////
-
-gulp.task('scripts', function () {
-	gulp.src('js/*.js')
+gulp.task('scripts', () => {
+	gulp.src(paths.allSrcJs)
 	.pipe(sourcemaps.init())
 	.pipe(uglify())
 	.pipe(concat('main.js'))
 	.pipe(sourcemaps.write())
-	.pipe(gulp.dest('public/js'))
-})
+	.pipe(gulp.dest(paths.jsDistDir))
+});
 
-/////////////// Serve & Watch ///////////////
+//// CSS ////
 
-gulp.task('watch', function () {
-	gulp.watch('views/*.pug', reload);
-	gulp.watch('css/**/*.scss', ['sass']);
-	gulp.watch('js/*.js', ['scripts']);
-})
+gulp.task('sass', () => {
+	gulp.src(paths.allSrcCss)
+	.pipe(sass())
+	.pipe(gulp.dest(paths.cssDistDir))
+});
 
-gulp.task('browser-sync', ['nodemon'], function () {
+//// Serve & Watch ////
+
+gulp.task('serve', ['nodemon', 'scripts', 'sass'], () => {
 	browserSync.init(null, {
 		proxy: "http://localhost:5000",
       files: ["public/**/*.*"],
       browser: "google chrome canary",
       port: 7000,
 	});
+	gulp.watch('views/*.pug', reload);
+	gulp.watch(paths.allSrcCss, ['sass']);
+	gulp.watch(paths.allSrcJs, ['js-watch']);
 });
 
-gulp.task('nodemon', function (cb) {
+gulp.task('js-watch', ['scripts'], (done) => {
+  browserSync.reload();
+  done();
+});
+
+gulp.task('nodemon', (cb) => {
 
 	var started = false;
 
 	return nodemon({
 		script: 'app.js'
-	}).on('start', function () {
+	}).on('start', () => {
 		// to avoid nodemon being started multiple times
 		if (!started) {
 			cb();
@@ -62,3 +71,5 @@ gulp.task('nodemon', function (cb) {
 		}
 	});
 });
+
+gulp.task('default', ['serve']);
