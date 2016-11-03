@@ -1,15 +1,17 @@
-header {
-  height: 75px;
-  border-bottom: 1px solid black;
-  font-size: 1.5em;
+.container {
+  background-color: white;
+  max-width: 1120px;
+  margin: 0 auto;
+  height: 100%;
 }
 
-.container {
+header {
+  height: 100px;
+  border-bottom: 1px solid black;
+  font-size: 1.5em;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 70%;
-  margin: 0 auto;
   ul {
     display: flex;
     height: 75px;
@@ -17,5 +19,11 @@ header {
     li {
       padding-left: 10px;
     }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .container {
+    width: 100%;
   }
 }

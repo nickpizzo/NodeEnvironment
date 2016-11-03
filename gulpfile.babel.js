@@ -1,12 +1,16 @@
 'use strict';
 
-var gulp = require('gulp');
-var browserSync = require('browser-sync');
-var nodemon = require('gulp-nodemon');
-var sass = require('gulp-sass');
+import gulp from 'gulp';
+import browserSync from 'browser-sync';
+import nodemon from 'gulp-nodemon';
+import sass from 'gulp-sass';
+import sourcemaps from 'gulp-sourcemaps';
+import uglify from 'gulp-uglify';
+import concat from 'gulp-concat';
+
 var reload = browserSync.reload;
 
-gulp.task('default', ['browser-sync', 'sass', 'js', 'watch']);
+gulp.task('default', ['browser-sync', 'sass', 'scripts', 'watch']);
 
 /////////////// CSS ///////////////
 
@@ -18,8 +22,12 @@ gulp.task('sass', function () {
 
 /////////////// JS ///////////////
 
-gulp.task('js', function () {
+gulp.task('scripts', function () {
 	gulp.src('js/*.js')
+	.pipe(sourcemaps.init())
+	.pipe(uglify())
+	.pipe(concat('main.js'))
+	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('public/js'))
 })
 
@@ -28,7 +36,7 @@ gulp.task('js', function () {
 gulp.task('watch', function () {
 	gulp.watch('views/*.pug', reload);
 	gulp.watch('css/**/*.scss', ['sass']);
-	gulp.watch('js/*.js', ['js']);
+	gulp.watch('js/*.js', ['scripts']);
 })
 
 gulp.task('browser-sync', ['nodemon'], function () {
